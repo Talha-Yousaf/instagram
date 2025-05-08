@@ -13,7 +13,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id = $_GET['id'];
 
-$conn = mysqli_connect("localhost", "root", "", "videos1");
+$conn = mysqli_connect("bbqserver.mysql.database.azure.com", "mylogin", 'TALHAulster"12', "videos1");
 $query = "SELECT * FROM videos WHERE id = $id";
 $result = mysqli_query($conn, $query);
 
