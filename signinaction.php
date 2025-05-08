@@ -1,10 +1,10 @@
 <?php
 //variables
 
-$hostnamme = "localhost";
-$username = "root";
-$password = "";
-$dbname = "videos";
+$hostname = "bbqserver.mysql.database.azure.com";
+$username = "mylogin";
+$password = 'TALHAulster"12'; 
+$dbname = "videos1";
 
 //connection
 

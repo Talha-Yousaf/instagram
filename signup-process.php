@@ -2,9 +2,9 @@
 session_start();
 
 // Database connection
-$hostname = "localhost";
-$username = "root";
-$password = "";
+$hostname = "bbqserver.mysql.database.azure.com";
+$username = "mylogin";
+$password = 'TALHAulster"12'; 
 $dbname = "videos1";
 
 $conn = mysqli_connect($hostname, $username, $password, $dbname);

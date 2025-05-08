@@ -2,10 +2,10 @@
 session_start();
 
 // Database connection
-$hostname = "sahrjeelmysql.mysql.database.azure.com";
-$username = "sharjeel";
-$password = "Sa1234567";
-$dbname = "netflix";
+$hostname = "bbqserver.mysql.database.azure.com";
+$username = "mylogin";
+$password = 'TALHAulster"12'; 
+$dbname = "videos1";
 
 $conn = mysqli_connect($hostname, $username, $password, $dbname);
 if (!$conn) {
