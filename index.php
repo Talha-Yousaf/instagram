@@ -8,16 +8,17 @@ if (isset($_SESSION['message'])) {
 }
 
 // Database connection
-$hostname = "bbqserver.mysql.database.azure.com";
-$username = "mylogin";
-$password = 'TALHAulster"12'; 
+$hostname = "localhost";
+$username = "root";
+$password = "";
 $dbname = "videos1";
 
 $conn = mysqli_connect($hostname, $username, $password, $dbname);
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
-
+echo "Connected successfully<br>";
+print_r($_SESSION);
 // Fetch genres from the genres table
 $genreQuery = "SELECT DISTINCT genre_name FROM genres";
 $genreResult = mysqli_query($conn, $genreQuery);

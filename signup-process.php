@@ -2,9 +2,9 @@
 session_start();
 
 // Database connection
-$hostname = "bbqserver.mysql.database.azure.com";
-$username = "mylogin";
-$password = 'TALHAulster"12'; 
+$hostname = "localhost";
+$username = "root";
+$password = "";
 $dbname = "videos1";
 
 $conn = mysqli_connect($hostname, $username, $password, $dbname);
@@ -25,7 +25,7 @@ if (isset($_POST['signup'])) {
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
     // Insert data into users table
-    $signup_query = "INSERT INTO users (username, password, FName, LName, Email, ContactNumber) VALUES ('$username', '$hashedPassword', '$fname', '$lname', '$email', '$contact')";
+    $signup_query = "INSERT INTO users (username, password, FName, LName, Email, ContactNumber) VALUES ('$username', '$password', '$fname', '$lname', '$email', '$contact')";
 
     if (mysqli_query($conn, $signup_query)) {
         // Redirect to index.php with a success message

@@ -8,7 +8,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Database connection
-$conn = mysqli_connect("bbqserver.mysql.database.azure.com", "mylogin", 'TALHAulster"12', "videos1");
+$conn = mysqli_connect("localhost", "root", "", "videos1");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }

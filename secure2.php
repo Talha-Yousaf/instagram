@@ -125,7 +125,7 @@ if (isset($_POST['delete_videos'])) {
 }
 
 // Fetch uploaded videos from the database based on the selected option
-$conn = mysqli_connect("bbqserver.mysql.database.azure.com", "mylogin", 'TALHAulster"12', "videos1");
+$conn = mysqli_connect("localhost", "root", "", "videos");
 $id = $_SESSION['id'];
 $view_option = isset($_GET['view-option']) ? $_GET['view-option'] : 'all';
 
