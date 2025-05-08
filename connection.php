@@ -1,8 +1,8 @@
 <?php
-$hostname = "localhost";
-$username = "root";
-$password = "";
-$dbname = "videos";
+$hostname = "bbqserver.mysql.database.azure.com";
+$username = "mylogin";
+$password = 'TALHAulster"12'; 
+$dbname = "videos1";
 
 // Connection to database
 $conn = mysqli_connect($hostname, $username, $password, $dbname)
