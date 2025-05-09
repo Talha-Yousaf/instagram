@@ -15,7 +15,6 @@ if (!$conn) {
 
 // Handle video and thumbnail upload
 if (isset($_POST['upload_video'])) {
-    // Handle video upload
     $title = $_POST['title'];
     $description = $_POST['description'];
     $publisher = $_POST['publisher'];
@@ -23,77 +22,39 @@ if (isset($_POST['upload_video'])) {
     $genre = $_POST['genre'];
     $ageRating = $_POST['age_rating'];
 
-    // File upload handling for video
-    $video_target_dir = "uploads/";
-    $video_target_file = $video_target_dir . basename($_FILES["fileToUpload"]["name"]);
-    $video_uploadOk = 1;
-    $videoFileType = strtolower(pathinfo($video_target_file, PATHINFO_EXTENSION));
+    // Array of public video URLs
+    $publicVideoLinks = [
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+    ];
 
-    // File upload handling for thumbnail
-    $thumbnail_target_dir = "uploads/";
-    $thumbnail_target_file = $thumbnail_target_dir . basename($_FILES["thumbnailToUpload"]["name"]);
-    $thumbnail_uploadOk = 1;
-    $thumbnailFileType = strtolower(pathinfo($thumbnail_target_file, PATHINFO_EXTENSION));
+    // Array of public thumbnail image URLs
+    $publicThumbnails = [
+        "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Sintel_poster.jpg/800px-Sintel_poster.jpg",
+        "https://mango.blender.org/wp-content/uploads/2013/05/ToS_poster.jpg",
+        "https://orange.blender.org/wp-content/themes/orange/images/common/elephants-dream.jpg",
+        "https://via.placeholder.com/300x200.png?text=Sample+Thumbnail"
+    ];
 
-    // Check if file already exists
-    if (file_exists($video_target_file)) {
-        echo "Sorry, video file already exists.";
-        $video_uploadOk = 0;
-    }
-    if (file_exists($thumbnail_target_file)) {
-        echo "Sorry, thumbnail image file already exists.";
-        $thumbnail_uploadOk = 0;
-    }
+    // Pick random video and thumbnail
+    $randomVideoUrl = $publicVideoLinks[array_rand($publicVideoLinks)];
+    $randomThumbnailUrl = $publicThumbnails[array_rand($publicThumbnails)];
 
-    // Check file size for video
-    if ($_FILES["fileToUpload"]["size"] > 50000000) {
-        echo "Sorry, your video file is too large.";
-        $video_uploadOk = 0;
-    }
-    // Check file size for thumbnail
-    if ($_FILES["thumbnailToUpload"]["size"] > 5000000) {
-        echo "Sorry, your thumbnail image file is too large.";
-        $thumbnail_uploadOk = 0;
-    }
+    $uploader_id = $_SESSION['id'];
+    $upload_datetime = date("Y-m-d H:i:s");
 
-    // Allow certain file formats for video
-    $allowedVideoFormats = array("mp4", "avi", "mp3", "mov", "pdf", "docx", "png", "jpg");
-    if (!in_array($videoFileType, $allowedVideoFormats)) {
-        echo "Sorry, only MP4, AVI, MOV, PDF, and DOCX files are allowed for video.";
-        $video_uploadOk = 0;
-    }
-    // Allow certain file formats for thumbnail
-    $allowedThumbnailFormats = array("jpg", "jpeg", "png", "gif");
-    if (!in_array($thumbnailFileType, $allowedThumbnailFormats)) {
-        echo "Sorry, only JPG, JPEG, PNG, and GIF files are allowed for thumbnail image.";
-        $thumbnail_uploadOk = 0;
-    }
+    // Insert into DB using public URLs
+    $sql = "INSERT INTO videos (title, description, publisher, producer, genre, AgeRating, filename, thumbnail, uploader_id, upload_datetime) 
+            VALUES ('$title', '$description', '$publisher', '$producer', '$genre', '$ageRating', '$randomVideoUrl', '$randomThumbnailUrl', '$uploader_id', '$upload_datetime')";
 
-    // Check if $uploadOk is set to 0 by an error for video
-    if ($video_uploadOk == 0) {
-        echo "Sorry, your video file was not uploaded.";
-    } elseif ($thumbnail_uploadOk == 0) {
-        echo "Sorry, your thumbnail image file was not uploaded.";
+    if (mysqli_query($conn, $sql)) {
+        echo "Video and thumbnail were assigned from public sources and saved successfully.";
     } else {
-        // if everything is ok, try to upload files
-        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $video_target_file) && move_uploaded_file($_FILES["thumbnailToUpload"]["tmp_name"], $thumbnail_target_file)) {
-            // Insert video details into database
-            $video_filename = basename($_FILES["fileToUpload"]["name"]);
-            $thumbnail_filename = basename($_FILES["thumbnailToUpload"]["name"]);
-            $uploader_id = $_SESSION['id'];
-            $upload_datetime = date("Y-m-d H:i:s"); // Current date and time
-
-            $sql = "INSERT INTO videos (title, description, publisher, producer, genre, AgeRating, filename, thumbnail, uploader_id, upload_datetime) 
-                    VALUES ('$title', '$description', '$publisher', '$producer', '$genre', '$ageRating', '$video_filename', '$thumbnail_filename', '$uploader_id', '$upload_datetime')";
-
-            if (mysqli_query($conn, $sql)) {
-                echo "The video file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " and thumbnail image file " . htmlspecialchars(basename($_FILES["thumbnailToUpload"]["name"])) . " have been uploaded.";
-            } else {
-                echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-            }
-        } else {
-            echo "Sorry, there was an error uploading your files.";
-        }
+        echo "Database Error: " . mysqli_error($conn);
     }
 }
 
@@ -166,50 +127,138 @@ if (isset($_POST['delete_videos'])) {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #121212;
+        color: #ffffff;
+        margin: 0;
+        padding: 20px;
+    }
 
-        .logout {
-            float: right;
-        }
+    .container {
+        padding: 20px;
+        background-color: #1f1f1f;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    }
 
-        .video-link {
-            display: block;
-            margin-bottom: 10px;
-        }
+    .nav-tabs {
+        background-color: #1f1f1f;
+        border-bottom: 1px solid #333;
+    }
 
-        .video-container {
-            margin-top: 20px;
-        }
+    .nav-tabs .nav-link {
+        color: #cccccc;
+        background-color: transparent;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
 
-        .upload-container {
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
+    .nav-tabs .nav-link.active {
+        background-color: #e50914;
+        color: #fff;
+        border-radius: 6px 6px 0 0;
+    }
 
-        .nav-tabs .nav-link.active {
-            color: #fff;
-            background-color: #007bff;
-            border-color: #007bff;
-        }
+    .nav-tabs .nav-link:hover {
+        background-color: #333;
+    }
 
-        .nav-tabs .nav-link {
-            color: #007bff;
-            border: 1px solid transparent;
-            border-top-left-radius: .25rem;
-            border-top-right-radius: .25rem;
-            margin-right: 2px;
-            line-height: 1.5;
-            padding: .5rem .75rem;
-        }
+    .upload-container {
+        background-color: #2c2c2c;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
 
-        .nav-tabs {
-            border-bottom: 1px solid #dee2e6;
-        }
+    .upload-container h3,
+    .video-container h3 {
+        color: #e50914;
+    }
+
+    .form-group label {
+        color: #ffffff;
+    }
+
+    .form-control,
+    .form-control-file {
+        background-color: #1f1f1f;
+        color: #ffffff;
+        border: 1px solid #444;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .form-control:focus {
+        border-color: #e50914;
+        outline: none;
+        box-shadow: 0 0 5px rgba(229, 9, 20, 0.7);
+    }
+
+    .btn-primary {
+        background-color: #e50914;
+        border-color: #e50914;
+        font-weight: bold;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: transparent;
+        color: #e50914;
+        border-color: #e50914;
+    }
+
+    .btn-danger {
+        background-color: #b00610;
+        border-color: #b00610;
+    }
+
+    .btn-danger:hover {
+        background-color: transparent;
+        color: #b00610;
+    }
+
+    .video-link {
+        color: #ffffff;
+        text-decoration: none;
+        margin-left: 10px;
+        transition: color 0.3s ease;
+    }
+
+    .video-link:hover {
+        color: #e50914;
+        text-decoration: underline;
+    }
+
+    input[type="checkbox"] {
+        transform: scale(1.2);
+    }
+
+    .video-container {
+        background-color: #2a2a2a;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+
+    .form-control-file {
+        padding: 5px;
+    }
+
+    select.form-control option {
+        background-color: #1f1f1f;
+        color: #ffffff;
+    }
+
+    .logout {
+        color: #e50914;
+        text-decoration: none;
+        float: right;
+        font-weight: bold;
+    }
+
+    .logout:hover {
+        text-decoration: underline;
+    }
     </style>
 </head>
 

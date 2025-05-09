@@ -264,7 +264,7 @@ if (isset($_POST['search'])) {
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h2>Welcome to Netflix</h2>
+                <h2>Instagram</h2>
             </div>
             <div class="col-md-6">
                 <?php if (isset($_SESSION['username'])) : ?>

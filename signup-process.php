@@ -22,10 +22,10 @@ if (isset($_POST['signup'])) {
     $contact = mysqli_real_escape_string($conn, $_POST['contact']);
 
     // Hash the password before storing it
-    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    // $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
     // Insert data into users table
-    $signup_query = "INSERT INTO users (username, password, FName, LName, Email, ContactNumber) VALUES ('$username', '$hashedPassword', '$fname', '$lname', '$email', '$contact')";
+    $signup_query = "INSERT INTO users (username, password, FName, LName, Email, ContactNumber) VALUES ('$username', '$password', '$fname', '$lname', '$email', '$contact')";
 
     if (mysqli_query($conn, $signup_query)) {
         // Redirect to index.php with a success message

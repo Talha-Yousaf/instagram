@@ -85,66 +85,124 @@ if (isset($_POST['submit_comment'])) {
     <title>View Video</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f1f5f8;
-            color: #141414;
-            margin: 0;
-            padding: 0;
-        }
-        .like,
-        .dislike {
-            background-color: white;
-            border: 1px solid black;
-            color: black;
-            cursor: pointer;
-        }
+        font-family: Arial, sans-serif;
+        background-color: #121212;
+        color: #ffffff;
+        margin: 0;
+        padding: 0;
+    }
 
-        .like.clicked {
-            background-color: green;
-            color: white;
-        }
+    .container {
+        width: 100%;
+        max-width: 1400px;
+        padding: 0 20px;
+        margin: 0 auto;
+    }
 
-        .dislike.clicked {
-            background-color: red;
-            color: white;
-        }
-        .container{
-            width: 100%;
-            max-width:1400px;
-            padding:0 20px;
-            margin:0 auto;
-        }
-        .video_container{
-            max-width:640px;
-            margin:0 auto;
-        }
-        .form-control {
-            color: #141414;
-            border: 1px solid rgba(44,44,44,.2);
-            border-radius: 10px;
-            padding: 10px 20px;
-            margin-right: 10px;
-            width: 250px;
-            transition: all 0.3s;
-        }
-        .btn-coment {
-            background: #e50914;
-            border:1px solid #e50914;
-            color: #fff;
-            border-radius: 25px;
-            padding: 10px 30px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top:10px;
-            text-decoration:none;
-        }
+    .video_container {
+        max-width: 640px;
+        margin: 20px auto;
+        background-color: #1f1f1f;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
 
-        .btn-coment:hover {
-            background:transparent;
-            color:#e50914;
-        }
+    h2, h3 {
+        color: #e50914;
+    }
+
+    p {
+        color: #cccccc;
+    }
+
+    video {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        background-color: #000;
+    }
+
+    .like,
+    .dislike {
+        background-color: #2c2c2c;
+        border: 1px solid #888;
+        color: #fff;
+        padding: 10px 20px;
+        margin: 10px 5px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .like.clicked {
+        background-color: green;
+        border-color: green;
+    }
+
+    .dislike.clicked {
+        background-color: red;
+        border-color: red;
+    }
+
+    .form-control {
+        background-color: #1f1f1f;
+        color: #ffffff;
+        border: 1px solid #444;
+        border-radius: 10px;
+        padding: 10px 20px;
+        margin-right: 10px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .form-control::placeholder {
+        color: #999;
+    }
+
+    .btn-coment {
+        background: #e50914;
+        border: 1px solid #e50914;
+        color: #fff;
+        border-radius: 25px;
+        padding: 10px 30px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-coment:hover {
+        background: transparent;
+        color: #e50914;
+    }
+
+    textarea.form-control {
+        width: 100%;
+        resize: vertical;
+    }
+
+    .comment {
+        background-color: #1f1f1f;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .comment strong {
+        color: #e50914;
+    }
+
+    a {
+        color: #e50914;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
 
     </style>
 </head>
@@ -157,10 +215,14 @@ if (isset($_POST['submit_comment'])) {
     <h2 style="text-align:center; paddng:20px;0"><?php echo $video['title']; ?></h2>
     <p style="text-align:center;"><strong>Description:</strong> <?php echo $video['description']; ?></p>
     <div class="video_container">
-    <video width="640" height="360" controls>
-        <source src="uploads/<?php echo $filename; ?>" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <?php
+// Determine if the filename is a URL or a local file
+$videoSrc = (strpos($filename, 'http') === 0) ? $filename : 'uploads/' . $filename;
+?>
+   <video width="640" height="360" controls>
+    <source src="<?php echo $videoSrc; ?>" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
 
     <!-- Like and dislike buttons -->
     <form action="" method="POST" id="likeDislikeForm">

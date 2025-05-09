@@ -91,204 +91,184 @@ if (isset($_POST['search'])) {
     <title>Netflix</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f1f5f8;
-            color: #141414;
-            margin: 0;
-            padding: 0;
-        }
+        :root {
+      --primary-color: #121212;
+      --secondary-color: #1f1f1f;
+      --accent-color: #e50914;
+      --text-color: #ffffff;
+      --muted-color: #cccccc;
+    }
 
-        h2 {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
+    body {
+      background-color: var(--primary-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-        .logout,
-        .signup {
-            float: right;
-            margin-top: 20px;
-            margin-right: 20px;
-            color: #141414;
-            text-decoration: none;
-        }
+    .navbar {
+      background-color: var(--secondary-color);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .logout:hover,
-        .signup:hover {
-            color: #ccc;
-        }
+    .navbar h2 {
+      color: var(--accent-color);
+      font-weight: bold;
+      margin: 0;
+    }
 
-        .search-form {
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-        }
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
 
-        .form-control {
-            color: #141414;
-            border: 1px solid rgba(44,44,44,.2);
-            border-radius: 10px;
-            padding: 10px 20px;
-            margin-right: 10px;
-            width: 250px;
-            transition: all 0.3s;
-        }
+    .navbar a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
 
-        .form-control:focus {
-            box-shadow: 0 2px 4px rgba(44,44,44,.2);
-        }
+    .navbar a:hover {
+      color: var(--accent-color);
+    }
 
-        .btn-search {
-            background: #e50914;
-            border:1px solid #e50914;
-            color: #fff;
-            border-radius: 25px;
-            padding: 10px 30px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+    .search-form {
+      margin: 2rem auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
 
-        .btn-search:hover {
-            background:transparent;
-            color:#e50914;
-        }
+    .form-control,
+    .btn-search {
+      border-radius: 30px;
+      padding: 10px 20px;
+      border: 1px solid #444;
+    }
 
-        .table {
-            background-color: #fff;
-            color: #141414;
-        }
+    .form-control {
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+    }
 
-        .table th,
-        .table td {
-            border: none;
-            padding: 15px;
-        }
+    .form-control:focus {
+      outline: none;
+      box-shadow: 0 0 5px var(--accent-color);
+    }
 
-        .table th {
-            font-size: 18px;
-            font-weight: bold;
-            text-transform: uppercase;
-            background-color: rgba(44,44,44,.05);
-        }
+    .btn-search {
+      background-color: var(--accent-color);
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
 
-        .table tbody tr:nth-child(even) {
-            background-color: rgba(44,44,44,.05);
-        }
+    .btn-search:hover {
+      background-color: #b00610;
+    }
 
-        .table tbody tr:hover {
-            background-color: rgba(44,44,44,.1);
-        }
+    .video-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 2rem;
+      justify-content: center;
+    }
 
-        .video-link {
-            color: #141414;
-            text-decoration: none;
-            transition: all 0.3s;
-            font-weight:600;
-        }
+    .video-card {
+      background-color: var(--secondary-color);
+      border-radius: 8px;
+      width: 180px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
 
-        .video-link:hover {
-            color: #e50914;
-        }
+    .video-card:hover {
+      transform: scale(1.05);
+    }
 
-        .age-rating {
-            color: #fff;
-        }
+    .video-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
 
-        .age-rating.pg-13 {
-            color: #00ff00; /* Green for PG-13 */
-        }
+    .video-card .info {
+      padding: 10px;
+    }
 
-        .age-rating.r {
-            color: #ff0000; /* Red for 18+ rating */
-        }
+    .video-card .info h6 {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text-color);
+    }
 
-        /* Modal */
-        .modal-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(44,44,44,.05);
-            justify-content: center;
-            align-items: center;
-        }
+    .video-card .info p {
+      margin: 0.5rem 0 0;
+      font-size: 0.875rem;
+      color: var(--muted-color);
+    }
 
-        .modal-content {
-            background-color: #f1f5f8;
-            padding: 20px;
-            border-radius: 10px;
-        }
+    .modal-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
 
-        .close-btn {
-            color: #141414;
-            cursor: pointer;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
+    .modal-content {
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+      border-radius: 10px;
+      padding: 2rem;
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+    }
 
-        .username {
-            float: right;
-            margin-top: 20px;
-            margin-right: 20px;
-            color: #141414;
-        }
+    .close-btn {
+      color: var(--muted-color);
+      font-size: 1.5rem;
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
 
-        .thumbnail {
-            width: 100px; /* Adjust width as needed */
-            height: auto; /* Maintain aspect ratio */
-        }
+    .dashboard {
+      background-color: var(--secondary-color);
+      padding: 2rem;
+      margin: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
 
-        .upload-link {
-            float: right;
-            margin-top: 20px;
-            margin-right: 20px;
-            color: #fff;
-            text-decoration: none;
-        }
+    .dashboard h3,
+    .dashboard h4 {
+      color: var(--accent-color);
+    }
 
-        /* Dashboard */
-        .dashboard {
-            background-color: #fff;
-            padding: 20px;
-            margin-top: 30px;
-            border-radius: 10px;
-        }
+    .dashboard .video-list li a {
+      color: var(--text-color);
+    }
 
-        .dashboard h3 {
-            color: #141414;
-            margin-bottom: 20px;
-        }
-
-        .dashboard .video-list {
-            list-style: none;
-            padding: 0;
-            background:rgba(44,44,44,.05);
-        }
-
-        .dashboard .video-list li {
-        }
-        .dashboard .video-list li:not(:last-child){
-            border-bottom:1px solid rgba(44,44,44,.1);
-        }
-
-        .dashboard .video-list li a {
-            color: #141414;
-            text-decoration: none;
-            transition: all 0.3s;
-            display:block;
-            padding:10px;
-        }
-
-        .dashboard .video-list li a:hover {
-            color: #e50914;
-            background:rgba(44,44,44,.1);
-        }
+    .dashboard .video-list li a:hover {
+      color: var(--accent-color);
+    }
     </style>
 </head>
 
@@ -296,7 +276,7 @@ if (isset($_POST['search'])) {
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h2>Welcome to Netflix</h2>
+                <h2>Instagram</h2>
             </div>
             <div class="col-md-6">
                 <?php if (isset($_SESSION['username'])) : ?>
@@ -399,7 +379,12 @@ if (isset($_POST['search'])) {
                             echo '<td><a href="view_video1.php?filename=' . $row['filename'] . '"><img src="uploads/' . $row['thumbnail'] . '" alt="Thumbnail" class="thumbnail"></a></td>'; // Display thumbnail image with title link
                             echo '<td><a class="video-link" href="view_video1.php?filename=' . $row['filename'] . '">' . $row['title'] . '</a></td>'; // Display title with link
                         } else {
-                            echo '<td><img src="uploads/' . $row['thumbnail'] . '" alt="Thumbnail" class="thumbnail"></td>'; // Display thumbnail image
+                            $thumbnailSrc = (strpos($row['thumbnail'], 'http') === 0) 
+    ? $row['thumbnail'] 
+    : 'uploads/' . $row['thumbnail'];
+
+echo '<td><img src="' . $thumbnailSrc . '" alt="Thumbnail" class="thumbnail" style="width: 100px; height: auto;"></td>';
+ // Display thumbnail image
                             echo '<td><span class="video-link">' . $row['title'] . '</span> <span style="color:red;">(You are not logged in. Please <a href="#" id="signin-link">Sign In</a> to watch videos)</span></td>'; // Display title with indication to sign in
                         }
                         echo '<td>' . $row['description'] . '</td>';
@@ -443,28 +428,30 @@ if (isset($_POST['search'])) {
     </div>
 
     <script>
-        // Show sign-in form when "Sign In" link is clicked
-        document.getElementById("signin-link").addEventListener("click", function(e) {
-            e.preventDefault();
-            document.getElementById("signin-form").style.display = "block";
-            document.getElementById("signup-form").style.display = "none";
-        });
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("signin-form").style.display = "none";
+      document.getElementById("signup-form").style.display = "none";
 
-        // Show sign-up form when "Sign Up" link is clicked
-        document.getElementById("signup-link").addEventListener("click", function(e) {
-            e.preventDefault();
-            document.getElementById("signup-form").style.display = "block";
-            document.getElementById("signin-form").style.display = "none";
-        });
+      document.getElementById("signin-link").addEventListener("click", function (e) {
+        e.preventDefault();
+        document.getElementById("signup-form").style.display = "none";
+        document.getElementById("signin-form").style.display = "flex";
+      });
 
-        // Close sign-in and sign-up forms when close button is clicked
-        document.querySelectorAll(".close-btn").forEach(function(closeBtn) {
-            closeBtn.addEventListener("click", function() {
-                document.getElementById("signin-form").style.display = "none";
-                document.getElementById("signup-form").style.display = "none";
-            });
+      document.getElementById("signup-link").addEventListener("click", function (e) {
+        e.preventDefault();
+        document.getElementById("signin-form").style.display = "none";
+        document.getElementById("signup-form").style.display = "flex";
+      });
+
+      document.querySelectorAll(".close-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.getElementById("signin-form").style.display = "none";
+          document.getElementById("signup-form").style.display = "none";
         });
-    </script>
+      });
+    });
+  </script>
 
 </body>
 
